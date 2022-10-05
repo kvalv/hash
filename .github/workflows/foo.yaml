@@ -28,6 +28,6 @@ jobs:
         id: cache-migrations
         uses: actions/cache@v3
         with:
-          path: dump.db
+          path: ./dump.db
           key: ${{ hashFiles('migrations/**')}}
       - run: echo "${{steps.cache-migrations.outputs.cache-hit}}"
