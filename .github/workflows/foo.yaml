@@ -21,8 +21,7 @@ jobs:
   Cache-file:
     runs-on: ubuntu-latest
     steps:
-      - name: Check out repository code
-        uses: actions/checkout@v3
+      - uses: actions/checkout@v3
       - run: echo "${{ hashFiles('migrations/**')}}"
       - name: cache migrations
         id: cache-migrations
@@ -30,4 +29,8 @@ jobs:
         with:
           path: ./dump.db
           key: ${{ hashFiles('migrations/**')}}
-      - run: echo "${{steps.cache-migrations.outputs.cache-hit}}"
+      - run: ls
+      - run: ls ${{ github.workspace }}
+      - if: ${{ steps.cache-migrations.outputs.cache-hit != 'true' }}
+        name: touch file
+        run: cat migrations/* > ./dump.db
